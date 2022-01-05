@@ -2,10 +2,19 @@ import React, { useState } from "react";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { useQuery, gql, useMutation } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 import { Container, Row, Col, FormInput, Button } from "shards-react";
 
+const link = new WebSocketLink({
+  uri: `ws://localhost:4000`,
+  options: {
+    reconect: true,
+  },
+});
+
 const client = new ApolloClient({
+  link,
   uri: "http://localhost:4000/",
   cache: new InMemoryCache(),
 });
