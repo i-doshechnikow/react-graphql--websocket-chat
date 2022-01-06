@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, gql, useMutation, useSubscription } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 
 import { Container, Row, Col, FormInput, Button } from "shards-react";
@@ -20,7 +20,7 @@ const client = new ApolloClient({
 });
 
 const GET_MESSAGES = gql`
-  query {
+  subscription {
     messages {
       id
       user
@@ -37,9 +37,7 @@ const POST_MESSAGE = gql`
 
 const Messages = (props) => {
   const { user } = props;
-  const { loading, error, data } = useQuery(GET_MESSAGES, {
-    pollInterval: 500,
-  });
+  const { loading, error, data } = useSubscription(GET_MESSAGES);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
